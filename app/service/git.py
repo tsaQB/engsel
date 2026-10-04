@@ -32,6 +32,18 @@ def get_local_commit():
     except Exception:
         return None
 
+def is_ancestor(commit_sha):
+    """Check if commit_sha is already an ancestor of HEAD (i.e. already applied locally)."""
+    try:
+        res = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", commit_sha, "HEAD"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        return res.returncode == 0
+    except Exception:
+        return False
+
 def get_latest_commit_atom():
     """Return the latest commit SHA from GitHub via the Atom feed (no auth)."""
     owner, repo = get_repo_owner_and_name()
@@ -64,10 +76,10 @@ def check_for_updates():
         # Not a git repo
         return False
 
-    if local != remote:
-        print(f"⚠️  A newer version is available (remote {remote[:7]} vs local {local[:7]}).")
-        print("   Run: git pull --rebase to update.")
-        return True
-    else:
-        # Up to date
+    if local == remote or is_ancestor(remote):
+        # Up to date (or local is ahead of remote feed)
         return False
+
+    print(f"⚠️  A newer version is available (remote {remote[:7]} vs local {local[:7]}).")
+    print("   Run: git pull --rebase to update.")
+    return True
