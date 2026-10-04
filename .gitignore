@@ -1,0 +1,41 @@
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment & Sensitive Credentials
+.env
+.env.*
+!.env.template
+tokens*
+refresh-tokens*
+ax.fp*
+bookmark.json
+active.number
+
+# Legacy / Scratch
+__pycache__/
+*.py[cod]
+env/
+venv/
+*.ipynb
+play*
+pg*
+*.bak
+*.me
+picked_*.png
+sentry/
+
+# Compiled Binaries & Release Archives
+engsel
+engsel.exe
+engsel-*
+main
+main.exe
+*.tar.gz
+*.zip
+
+# Operating System Files
+.DS_Store
+Thumbs.db
